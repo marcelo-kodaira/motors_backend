@@ -1,0 +1,445 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Motors",
+    "description": "Motors",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "Cadastro de usuário",
+        "description": "Essa rota será responsável por cadastrar um novo usuário",
+        "tags": ["Usuários"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "example": {
+                "name": "string",
+                "email": "string",
+                "cpf": "string",
+                "cell": "string",
+                "birthdate": "string",
+                "description": "string",
+                "password": "string",
+                "is_buyer": true,
+                "address": {
+                  "cep": "string",
+                  "state": "string",
+                  "city": "string",
+                  "road": "string",
+                  "number": "string",
+                  "complement": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/announcements": {
+      "post": {
+        "summary": "Cadastro de anuncio",
+        "description": "Essa rota será responsável por cadastrar um novo anúncio",
+        "tags": ["Anúncios"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Announcements"
+              },
+              "example": {
+                "title": "string",
+                "description": "string",
+                "year": "string",
+                "mileage": "string",
+                "price": "string",
+                "is_sale": true,
+                "is_car": true,
+                "is_published": true,
+                "images": [
+                  {
+                    "image_url": "string"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Announcements"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing authorization headers"
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os anúncios",
+        "description": "Essa rota será responsável por listar todos os anúncios",
+        "tags": ["Anúncios"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Announcements"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/announcements/{id}": {
+      "get": {
+        "summary": "Encontra um anuncio pelo id",
+        "description": "retorna as informações do anúncio pelo id",
+        "tags": ["Anúncios"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Announcements"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Editar um anúncio",
+        "description": "Rota responsável por editar um anúncio",
+        "tags": ["Anúncios"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Announcements"
+              },
+              "example": {
+                "title": "string",
+                "description": "string",
+                "year": "string",
+                "mileage": "string",
+                "price": "string",
+                "is_sale": true,
+                "is_car": true,
+                "is_published": true,
+                "images": [
+                  {
+                    "image_url": "string"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Announcements"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta um anúncio pelo id",
+        "description": "Deleta um anúncio pelo id",
+        "tags": ["Anúncios"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Logar no sistema",
+        "description": "Essa rota será responsável por autenticar usuário",
+        "tags": ["Login"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Wrong email/password"
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "summary": "Obter informação do usuário autenticado",
+        "description": "Essa rota será responsável por retornar as informações do usuário autenticado",
+        "tags": ["Profile"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "cpf": {
+            "type": "string"
+          },
+          "cell": {
+            "type": "string"
+          },
+          "birthdate": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "is_buyer": {
+            "type": "boolean"
+          },
+          "address": {
+            "type": "object",
+            "$ref": "#/components/schemas/Address"
+          },
+          "annoucements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Announcements"
+            }
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "cep": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "road": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "complement": {
+            "type": "string"
+          }
+        }
+      },
+      "Announcements": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          },
+          "mileage": {
+            "type": "string"
+          },
+          "price": {
+            "type": "string"
+          },
+          "is_sale": {
+            "type": "boolean"
+          },
+          "is_car": {
+            "type": "boolean"
+          },
+          "is_published": {
+            "type": "boolean"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            }
+          },
+          "user": {
+            "type": "object",
+            "$ref": "#/components/schemas/User"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          }
+        }
+      },
+      "Image": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string"
+          }
+        }
+      },
+      "Comment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "user": {
+            "type": "object",
+            "$ref": "#/components/schemas/User"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
